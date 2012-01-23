@@ -26,6 +26,11 @@ function sportsit_menu() {
   $items['sportsit/test'] = array(
     'title' => 'test',
     'page callback' => 'sportsit_test',
+    'access callback' => 'administer sportsit',
+  );
+  $items['sportsit/weekly'] = array(
+    'title' => 'Weekly Schedule',
+    'page callback' => 'sportsit_weekly',
     'access callback' => TRUE,
   );
   $items['admin/settings/sportsit'] = array(
@@ -51,6 +56,22 @@ function sportsit_test() {
   }
   else { //Error
     
+  }
+  return $themed;
+}
+
+function sportsit_weekly() {
+  $results = sportsit_query(array(
+    'start' => sportsit_format_date(time()),
+    'end' => sportsit_format_date(strtotime('+1 week')),
+  ));
+  
+  $data = json_decode($results->data);
+  if(!empty($results) && $results->code == 200 ) { // OK
+    $themed = theme('sportsit_events', $data);
+  }
+  else { //Error
+    drupal_not_found();
   }
   return $themed;
 }
