@@ -43,7 +43,7 @@ function sportsit_query($options = array(), $reset = FALSE) {
 
       $res = drupal_http_request($query_url_full, array(), 'GET');
       $static_cache[$hash] = $res;
-      cache_set('sportsit_data.' . $hash, $res);
+      cache_set('sportsit_data.' . $hash, $res,'cache', CACHE_TEMPORARY);
     }
   }
   return $static_cache[$hash];
