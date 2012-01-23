@@ -47,7 +47,7 @@
         <?php print $thisDate;?> 
       </h3>
     <?php endif;?>
-    <div class="event event-type-<?php print $event->eventType;?>">
+    <div class="event event-type-<?php print $event->eventType;?> <?php print _sportsit_zebra();?>">
       <div class="time">
         <?php print date('G:i', strtotime($event->eventStart));?> 
         -

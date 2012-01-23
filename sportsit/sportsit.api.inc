@@ -60,3 +60,13 @@ function _sportsit_hash($array) {
 function sportsit_format_date($timestamp) {
   return date('Y-m-d', $timestamp);
 }
+
+
+function _sportsit_zebra($reset = FALSE) {
+  static $zebra = 0;
+  if ($reset) {
+    $zebra = 0;
+  }
+  
+  return ($zebra++ %2 == 0?'even':'odd');
+}
