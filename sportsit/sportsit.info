@@ -1,0 +1,6 @@
+name = Sports IT Api
+description = Integration with Sports IT API for Drupal
+core = 6.x
+package = Other
+
+;dependencies[]=

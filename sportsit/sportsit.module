@@ -1,0 +1,68 @@
+<?php
+/**
+ * Sports IT Api for Drupal
+ * Implements and integrates sports IT API calls. Drupal wrappers for sportsit.
+ * 
+ * 
+ * @copyright 2012 Triple Smart
+ * @author Lucas S. Caro <lucas@triplesmart.com>
+ * @license Licensed under the terms of the GNU Lesser General Public License:
+ *      http://www.opensource.org/licenses/lgpl-license.php
+ * 
+ */
+
+
+function sportsit_init() {
+  module_load_include('inc', 'sportsit','sportsit.api');
+}
+
+function sportsit_perm() {
+  return array(
+    'administer sportsit',
+  );
+}
+function sportsit_menu() {
+  $items = array();
+  $items['sportsit/test'] = array(
+    'title' => 'test',
+    'page callback' => 'sportsit_test',
+    'access callback' => TRUE,
+  );
+  $items['admin/settings/sportsit'] = array(
+    'title' => 'Sports IT Integration',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('sportsit_admin_form'),
+    'file' => 'sportsit.admin.inc',
+    'access arguments' => 'administer sportsit',
+  );
+  
+  return $items;
+}
+
+function sportsit_test() {
+  $results = sportsit_query(array(
+    'start' => sportsit_format_date(time()),
+    'end' => sportsit_format_date(strtotime('+1 day')),
+  ));
+  
+  $data = json_decode($results->data);
+  if(!empty($results) && $results->code == 200 ) { // OK
+    $themed = theme('sportsit_events', $data);
+  }
+  else { //Error
+    
+  }
+  return $themed;
+}
+
+function sportsit_theme($existing, $type, $theme, $path) {
+  return array(
+    'sportsit_events' => array(
+      'arguments' => array(
+        'data' => NULL,
+      ),
+      'template' => 'sportsit_events',
+      'path' => $path . DIRECTORY_SEPARATOR . 'theme',
+    ),
+  );
+}
